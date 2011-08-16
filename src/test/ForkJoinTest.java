@@ -7,11 +7,11 @@ import java.util.concurrent.ForkJoinTask;
 import java.util.concurrent.RecursiveTask;
 
 public class ForkJoinTest {
-    private final int NUMBER_OF_CPU = Runtime.getRuntime().availableProcessors();
+    private static final int NUMBER_OF_CPU = Runtime.getRuntime().availableProcessors();
     // maximum number of SlowNumber per fork to perform add operation upon
-    private final int NUMBERS_PER_FORK = 5;
+    private static final int NUMBERS_PER_FORK = 5;
     // number of milliSeconds simulating the amount of time per add operation
-    private final int TIME_PER_OPERATION_IN_MILLIS = 10;
+    private static final int TIME_PER_OPERATION_IN_MILLIS = 10;
 
     // just a set of numbers on which addition will be performed
     // this is just to ease the tester to write as many numbers as he feels like
