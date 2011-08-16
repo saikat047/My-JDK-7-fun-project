@@ -12,20 +12,13 @@ public class ForkJoinTest {
     private final int NUMBERS_PER_FORK = 5;
     private final int TIME_PER_OPERATION_IN_MILLIS = 10;
 
-    private final boolean debug = false;
-
     private final int [] dummyNumbers = new int [] {2,3,4,5,6,7,8,9,1,2,3,5,6,4,3,2,4,5,6,7,5,4,6,7,8,5,4,3,4,5,6,7,8};
 
     public static void main(String [] argv) {
         new ForkJoinTest().testIt();
     }
 
-    public boolean isDebug() {
-        return debug;
-    }
-
     private void testIt() {
-        System.out.println(String.format("Total number of numbers: %s", dummyNumbers.length));
         SlowNumber [] slowNumbers = new SlowNumber[dummyNumbers.length];
         for (int i = 0; i < slowNumbers.length; i++) {
             slowNumbers[i] = new SlowNumber(dummyNumbers[i]);
@@ -72,10 +65,6 @@ public class ForkJoinTest {
             this.numbers = numbers;
             this.fromIndex = fromIndex;
             this.toIndex = toIndex;
-            if (isDebug()) {
-                System.out.println(String.format("Task created with total numbers: %s, fromIndex: %s, toIndex: %s",
-                                                 numbers.length, fromIndex, toIndex));
-            }
         }
 
         @Override
@@ -94,26 +83,14 @@ public class ForkJoinTest {
                 }
             }
 
-            if (isDebug()) {
-                System.out.println(String.format("Calculating sum from start: %s, end: %s", myStart, toIndex));
-            }
-
             SlowNumber total = new SlowNumber();
             for (int i = myStart; i < toIndex; i++) {
                 total.add(numbers[i]);
             }
 
-            if (isDebug()) {
-                System.out.println(String.format("Added %s numbers, result: %s", toIndex - myStart, total));
-            }
-
             if (!childAddTasks.isEmpty()) {
                 for (ForkJoinTask<SlowNumber> childAddTask : childAddTasks) {
                     total.add(childAddTask.join());
-                }
-
-                if (isDebug()) {
-                    System.out.println(String.format("Found child-task, new total: %s", total));
                 }
             }
             return total;
